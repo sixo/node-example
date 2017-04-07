@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">NodeExample</string>
+    <string name="node_process_name">node.service</string>
+    <string name="but_start">Start</string>
+    <string name="but_stop">Stop</string>
+    <string name="unknown_ip_port">Unknown</string>
+</resources>
