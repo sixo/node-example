@@ -1,1 +1,1 @@
-include ':app', ':nodelib'
+include ':app'

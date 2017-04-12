@@ -5,6 +5,6 @@ Additionally, it outputs the same message through http. The http server uses non
 
 The github project doesn't contain Node.js shared library. You have to build it yourself and update the path in CMakeLists.txt, so that the build system can package it into the final .apk.
 
-This example is related to my [blogpost](https://www.sisik.eu/blog/embedding_node_into_android_app) about embedding Node.js into Android apps.
+This example is related to my [blogpost](https://www.sisik.eu/blog/embedding-node-into-android-app) about embedding Node.js into Android apps.
 
 Feel free to use and edit according to your liking.
