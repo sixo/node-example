@@ -36,11 +36,47 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'eu.sisik:nodelib:0.3'
     testCompile 'junit:junit:4.12'
 }
+
+/**
+ * Get libnode.so shared library and include header files from my maven repo
+ */
+project.afterEvaluate {
+    preBuild.dependsOn(copyDepFiles)
+}
+
+task copyDepFiles {
+    doFirst() {
+        configurations.compile.each {
+            if (it.name.contains("nodelib")) {
+                def aarPath = it.absolutePath
+
+                // Copy libnode.so
+                copy {
+                    from zipTree(aarPath)
+                    into "src/main"
+                    include "jni/**"
+                }
+                ant.move(file: "src/main/jni", tofile: "src/main/jniLibs")
+
+                // Copy node's include headers
+                copy {
+                    from zipTree(aarPath)
+                    into "src/main/include"
+                    include "assets/include/**"
+                }
+                ant.move(file: "src/main/include/assets/include", tofile: "src/main/include")
+                delete "src/main/include/assets"
+            }
+        }
+    }
+}
+

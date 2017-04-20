@@ -17,6 +17,7 @@ import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
+import java.util.List;
 
 import static android.content.Context.ACTIVITY_SERVICE;
 
@@ -82,5 +83,16 @@ public class Utils {
         }
 
         return false;
+    }
+
+    public static int getPid(Context context, String processName) {
+        ActivityManager am = (ActivityManager) context.getSystemService(ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningAppProcessInfo pi: am.getRunningAppProcesses()) {
+            if(pi.processName.equals(processName))
+                return pi.pid;
+        }
+
+        return -1;
     }
 }

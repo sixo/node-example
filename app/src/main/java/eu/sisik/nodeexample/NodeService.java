@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.os.Process;
 
 import java.util.ServiceConfigurationError;
 
@@ -43,8 +44,11 @@ public class NodeService extends Service {
 
     @Override
     public void onDestroy() {
-        sendBroadcast(new Intent(BROADCAST_FINISHED));
         super.onDestroy();
+        sendBroadcast(new Intent(BROADCAST_FINISHED));
+
+        // This ugly hack is for now necessary to kill node's process
+        Process.killProcess(Utils.getPid(this, getString(R.string.node_process_name)));
     }
 
     @Override

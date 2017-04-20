@@ -3,5 +3,7 @@
     <string name="node_process_name">node.service</string>
     <string name="but_start">Start</string>
     <string name="but_stop">Stop</string>
-    <string name="unknown_ip_port">Unknown</string>
+    <string name="unknown_ip_port">Could not guess correct ip address</string>
+    <string name="node_not_running">Node.js not running</string>
+    <string name="address_info">"Type the following into your browser\'s address bar \n"</string>
 </resources>

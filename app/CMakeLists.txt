@@ -9,23 +9,22 @@ add_library( native-lib SHARED ${app_src_files} )
 ###########################################################
 # Node.js part starts here
 
-# Replace $ENV{VENDOR}/nodejs/.." with the path to
+# Replace ${CMAKE_SOURCE_DIR}/src/main/.." with the path to
 # your Node.js includes
-include_directories(SYSTEM $ENV{VENDOR}/nodejs/include )
-include_directories(SYSTEM $ENV{VENDOR}/nodejs/include/v8_include )
+include_directories(SYSTEM ${CMAKE_SOURCE_DIR}/src/main/include/node )
 
 add_library( nodejs-lib SHARED IMPORTED)
 
-# Replace "$ENV{VENDOR}/nodejs/lib/${ANDROID_ABI}/libnode.so" with
+# Replace "${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}" with
 # the path to your libnode.so shared lib
 set_target_properties( nodejs-lib
                       PROPERTIES IMPORTED_LOCATION
-                      $ENV{VENDOR}/nodejs/lib/${ANDROID_ABI}/libnode.so )
+                      ${CMAKE_SOURCE_DIR}/src/main/jniLibs/${ANDROID_ABI}/libnode.so )
 
-# It still seems to be necessary to manually copy the external shared lib
-# to the proper Android Studio project directory
-file(COPY $ENV{VENDOR}/nodejs/lib/${ANDROID_ABI}/libnode.so
-    DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
+# If your libnode.so is not placed into jniLibs directory, you might need to copy
+# it manually like this
+#file(COPY $ENV{VENDOR}/nodejs/lib/${ANDROID_ABI}/libnode.so
+#    DESTINATION ${CMAKE_LIBRARY_OUTPUT_DIRECTORY})
 ###########################################################
 
 

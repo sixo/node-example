@@ -17,6 +17,8 @@ extern "C" {
 JNIEXPORT void JNICALL
 Java_eu_sisik_nodeexample_NodeService_startNode(JNIEnv *env, jobject instance,
                                                  jobjectArray args);
+JNIEXPORT void JNICALL
+Java_eu_sisik_nodeexample_NodeService_stopNode(JNIEnv *env, jobject instance);
 }
 
 namespace sisik {

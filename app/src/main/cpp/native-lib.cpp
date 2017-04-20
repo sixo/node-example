@@ -8,7 +8,6 @@
 #include <thread>
 #include <vector>
 #include <node.h>
-#include <env.h>
 #include <unistd.h>
 
 void Java_eu_sisik_nodeexample_NodeService_startNode(JNIEnv *env, jobject instance, jobjectArray args)

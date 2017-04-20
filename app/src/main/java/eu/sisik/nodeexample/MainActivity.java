@@ -16,8 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Node;
-
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -28,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         startBut = (Button) findViewById(R.id.but_start);
-        ipPortTv = (TextView) findViewById(R.id.tv_ip_port);
+        infoTv = (TextView) findViewById(R.id.tv_info);
 
         startBut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,18 +48,7 @@ public class MainActivity extends AppCompatActivity {
         IntentFilter intentFilter = new IntentFilter(NodeService.BROADCAST_STARTED);
         intentFilter.addAction(NodeService.BROADCAST_FINISHED);
         registerReceiver(nodeStatusReceiver, intentFilter);
-
-        if (Utils.isServiceRunning(this, NodeService.class)) {
-            startBut.setText(R.string.but_stop);
-            // Try to guess the ip of the device on local network
-            String ip = Utils.getIP();
-            if (ip != null)
-                ipPortTv.setText(ip + ":" + NodeService.PORT);
-            else
-                ipPortTv.setText(R.string.unknown_ip_port);
-        } else {
-            startBut.setText(R.string.but_start);
-        }
+        updateView();
     }
 
     @Override
@@ -74,17 +61,29 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
-            switch (action) {
-                case NodeService.BROADCAST_FINISHED:
-                    startBut.setText(R.string.but_start);
-                    break;
-                case NodeService.BROADCAST_STARTED:
-                    startBut.setText(R.string.but_stop);
-                    break;
+            if ( action.equals(NodeService.BROADCAST_FINISHED) ||
+                 action.equals(NodeService.BROADCAST_STARTED) ) {
+                updateView();
             }
         }
     };
 
+    private void updateView() {
+        if (Utils.isServiceRunning(this, NodeService.class)) {
+            startBut.setText(R.string.but_stop);
+            // Try to guess the ip of the device on local network
+            String ip = Utils.getIP();
+            if (ip != null)
+                infoTv.setText(getString(R.string.address_info)  + ip.replace("/", "") + ":" + NodeService.PORT);
+            else
+                infoTv.setText(R.string.unknown_ip_port);
+        }
+        else {
+            startBut.setText(R.string.but_start);
+            infoTv.setText(R.string.node_not_running);
+        }
+    }
+
     private Button startBut;
-    private TextView ipPortTv;
+    private TextView infoTv;
 }
