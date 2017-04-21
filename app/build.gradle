@@ -33,6 +33,14 @@ android {
             path "CMakeLists.txt"
         }
     }
+
+    // No need to add node's include header to final apk
+    applicationVariants.all { variant ->
+        variant.mergeAssets.doLast {
+            delete "build/intermediates/assets/${variant.baseName}/include"
+            println ">>>>>>Deleting = build/intermediates/assets/${variant.baseName}/include";
+        }
+    }
 }
 
 dependencies {
@@ -46,9 +54,9 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
-/**
- * Get libnode.so shared library and include header files from my maven repo
- */
+
+// Get libnode.so shared library and include header files from the aar
+// downloaded from my maven repo
 project.afterEvaluate {
     preBuild.dependsOn(copyDepFiles)
 }
